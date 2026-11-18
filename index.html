@@ -1050,6 +1050,10 @@ footer{
 
     <h2>👑 پروفایل اختصاصی من</h2>
 
+<button class="authbtn" onclick="shareMyProfile()">
+  🔗 اشتراک‌گذاری پروفایل من
+</button>
+
     <div class="account-avatar" id="profilePageAvatar">
       👑
     </div>
@@ -1069,39 +1073,30 @@ footer{
         <strong id="profilePageBalance">$0.00</strong>
       </div>
 
-      <div class="stat-card">
-        <span>🎁</span>
-        <small>صندوق‌های بازشده</small>
-        <strong id="profilePageOpenings">0</strong>
-      </div>
+id="myProfilePage" style="display:none;">
 
-      <div class="stat-card">
-        <span>🏆</span>
-        <small>مجموع جوایز آزمایشی</small>
-        <strong id="profilePagePrizes">$0.00</strong>
-      </div>
+  <div class="panel" style="text-align:center;">
 
+    <h2>👑 پروفایل اختصاصی من</h2>
+
+    <div class="account-avatar" id="profilePageAvatar">
+      👑
     </div>
 
-    <div class="achievement-panel">
-      <h3>🏆 نشان افتخار</h3>
-      <div id="profilePageBadge">🥉 تازه‌کار</div>
-    </div>
-
-    <button class="authbtn" onclick="closeMyProfile()">
-      ↩️ بازگشت به پنل
-    </button>
-
-  </div>
+    <h2 id="profilePageName">کاربر HIRO BOX</h2>
+<div class="profile-rank">
+  🏆 رتبه شما:
+  <strong id="profilePageRank">در حال دریافت...</strong>
 </div>
-<!-- بخش بازی -->
-<div id="gameArea">
+    <p>عضو خانواده HIRO BOX</p>
 
-<div class="balance">
-<small>موجودی آزمایشی شما</small>
-<div class="amount" id="balance">$0.00</div>
-<small>Demo Credits • غیرقابل برداشت</small>
-</div>
+    <div class="account-stats">
+
+      <div class="stat-card">
+        <span>💰</span>
+        <small>موجودی آزمایشی</small>
+        <strong id="profilePageBalance">$0.00</strong>
+      </div>
 
 <h2>🎁 صندوق‌های شانسی</h2>
 
@@ -1274,48 +1269,7 @@ async function selectAvatar(avatar) {
 }
 
 window.selectAvatar = selectAvatar;
-async function showMyProfile() {
-  const account = document.getElementById("accountPanel");
-  const game = document.getElementById("gameArea");
-  const profilePage = document.getElementById("myProfilePage");
 
-  account.style.display = "none";
-  game.style.display = "none";
-  profilePage.style.display = "block";
-
-  document.getElementById("profilePageAvatar").textContent =
-    document.querySelector(".account-avatar").textContent;
-
-  document.getElementById("profilePageName").textContent =
-    document.getElementById("accountEmail").textContent;
-
-  document.getElementById("profilePageBalance").textContent =
-    document.getElementById("dashboardBalance").textContent;
-
-  document.getElementById("profilePageOpenings").textContent =
-    document.getElementById("openingCount").textContent;
-
-  document.getElementById("profilePagePrizes").textContent =
-    document.getElementById("totalPrizes").textContent;
-
-  
-  document.getElementById("profilePageBadge").textContent =
-    document.getElementById("achievementBadge").textContent;
-    const rankElement = document.getElementById("profilePageRank");
-
-  rankElement.textContent = "در حال دریافت...";
-
-  const { data, error } = await supabaseClient.rpc("get_my_demo_rank");
-
-  if (error) {
-    rankElement.textContent = "خطا در دریافت رتبه";
-    console.error(error);
-  } else if (data) {
-    rankElement.textContent = "نفر " + data;
-  } else {
-    rankElement.textContent = "هنوز رتبه‌ای ندارید";
-  }
-}
 
 function closeMyProfile() {
   document.getElementById("myProfilePage").style.display = "none";
@@ -1709,14 +1663,23 @@ window.closeResult = function() {
 };
 
 // بررسی حساب هنگام باز شدن سایت
+
 async function initializeApp() {
   if (!supabaseClient) {
     showMessage("کتابخانه Supabase بارگذاری نشده است.");
     return;
   }
 
+  const publicUsername =
+    new URLSearchParams(window.location.search).get("profile");
+
+  if (publicUsername) {
+    await showPublicProfile(publicUsername);
+    return;
+  }
+
   try {
-    const {data,error} = await supabaseClient.auth.getSession();
+    const { data, error } = await supabaseClient.auth.getSession();
 
     if (error) throw error;
 
@@ -1726,10 +1689,11 @@ async function initializeApp() {
       showLogin();
     }
 
-  } catch(e) {
+  } catch (e) {
     showMessage("خطا: " + e.message);
   }
 }
+
 async function loadLeaderboard() {
   const list = document.getElementById("leaderboardList");
 
