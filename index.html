@@ -1058,6 +1058,1066 @@ footer{
       👑
     </div>
 
+    <h2 id="pro
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>HIRO BOX</title>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<style>
+*{box-sizing:border-box}
+
+body{
+  margin:0;
+  background:
+    radial-gradient(ellipse at top,#29200d 0%,#101010 40%,#070707 100%);
+  color:#fff;
+  font-family:Tahoma,Arial,sans-serif;
+  min-height:100vh;
+}
+
+header{
+  text-align:center;
+  padding:30px 15px;
+  background:linear-gradient(180deg,#191919,#0c0c0c);
+  border-bottom:1px solid #8e6b23;
+  box-shadow:0 5px 25px #000;
+}
+
+.logo{
+  font-size:34px;
+  color:#f7d36b;
+  font-weight:bold;
+  letter-spacing:2px;
+  text-shadow:0 0 18px #c99b3155;
+}
+
+main{
+  max-width:650px;
+  margin:auto;
+  padding:20px 16px;
+}
+
+h2{
+  color:#f5cc59;
+  text-align:center;
+  text-shadow:0 0 12px #d5aa4033;
+}
+
+.panel,.history{
+  background:linear-gradient(145deg,#202020,#121212);
+  border:1px solid #70551f;
+  border-radius:18px;
+  padding:18px;
+  margin-bottom:22px;
+  box-shadow:0 8px 25px #0008;
+}
+
+input{
+  width:100%;
+  padding:14px;
+  margin:8px 0;
+  border-radius:10px;
+  border:1px solid #55451f;
+  background:#0c0c0c;
+  color:white;
+  outline:none;
+  transition:.25s;
+}
+
+input:focus{
+  border-color:#f5cc59;
+  box-shadow:0 0 10px #f5cc5933;
+}
+
+button{
+  border:1px solid #ffe08a;
+  border-radius:11px;
+  background:linear-gradient(110deg,#9c6b12,#f5cc59,#ffe69a);
+  color:#171006;
+  padding:13px 17px;
+  font-weight:bold;
+  cursor:pointer;
+  transition:transform .2s,box-shadow .2s;
+  box-shadow:0 4px 14px #d6a52d22;
+}
+
+button:hover{
+  transform:translateY(-2px);
+  box-shadow:0 7px 20px #d6a52d55;
+}
+
+button:active{transform:scale(.97)}
+button:disabled{opacity:.5;cursor:not-allowed}
+
+.authbtn{
+  width:100%;
+  margin:6px 0;
+}
+
+.balance{
+  text-align:center;
+  background:linear-gradient(135deg,#38290c,#171208);
+  border:1px solid #d5aa40;
+  border-radius:20px;
+  padding:24px 15px;
+  margin:22px 0;
+  box-shadow:0 0 25px #c99b3122,inset 0 0 20px #d5aa4010;
+}
+
+.amount{
+  font-size:34px;
+  color:#ffdc70;
+  margin:12px;
+  font-weight:bold;
+  text-shadow:0 0 15px #ffdc7044;
+}
+
+.boxes{
+  display:grid;
+  grid-template-columns:repeat(2,minmax(0,1fr));
+  gap:15px;
+}
+
+.boxcard{
+  background:linear-gradient(145deg,#252525,#111);
+  border:1px solid #66501f;
+  border-radius:18px;
+  padding:20px 10px;
+  text-align:center;
+  box-shadow:0 7px 18px #0008;
+  transition:.25s;
+  overflow:hidden;
+}
+
+.boxcard:hover{
+  transform:translateY(-5px);
+  border-color:#f5cc59;
+  box-shadow:0 10px 25px #c99b3133;
+}
+
+.chest{
+  font-size:58px;
+  filter:drop-shadow(0 5px 8px #000);
+  animation:floatChest 3s ease-in-out infinite;
+}
+
+@keyframes floatChest{
+  0%,100%{transform:translateY(0)}
+  50%{transform:translateY(-5px)}
+}
+
+.boxcard h3{
+  color:#f5ce60;
+  margin:12px 0;
+}
+
+.boxcard p{
+  color:#bbb;
+  font-size:12px;
+  line-height:1.8;
+}
+
+.boxcard button{
+  width:95%;
+  margin-top:8px;
+}
+
+.notice{
+  font-size:12px;
+  color:#e7c878;
+  background:#211b0d;
+  border:1px solid #59451c;
+  padding:14px;
+  border-radius:12px;
+  line-height:2.1;
+  margin-top:22px;
+}
+
+#authMessage,#accountStatus{
+  font-size:12px;
+  color:#f5ce60;
+  line-height:2;
+}
+
+#history{
+  font-size:12px;
+  color:#ddd;
+  line-height:2.2;
+}
+
+#accountPanel,#gameArea{display:none}
+.hidden{display:none!important}
+
+.emailText{
+  direction:ltr;
+  text-align:center;
+  color:#ddd;
+  word-break:break-all;
+}
+
+#result{
+  display:none;
+  position:fixed;
+  inset:0;
+  background:#000d;
+  align-items:center;
+  justify-content:center;
+  padding:20px;
+  z-index:999;
+  backdrop-filter:blur(5px);
+}
+
+.dialog{
+  background:linear-gradient(145deg,#252015,#111);
+  border:1px solid #e1b94e;
+  border-radius:22px;
+  padding:28px 22px;
+  text-align:center;
+  width:100%;
+  max-width:350px;
+  box-shadow:0 0 45px #d5aa4033;
+  animation:showDialog .3s ease;
+}
+
+@keyframes showDialog{
+  from{opacity:0;transform:scale(.85)}
+  to{opacity:1;transform:scale(1)}
+}
+
+#prize{
+  font-size:36px;
+  color:#ffdb70;
+  margin:20px 0;
+  text-shadow:0 0 18px #ffdb7055;
+}
+
+footer{
+  text-align:center;
+  padding:28px 15px;
+  color:#888;
+  font-size:11px;
+  border-top:1px solid #292116;
+  margin-top:30px;
+}
+
+@media(max-width:420px){
+  main{padding:14px 11px}
+  .logo{font-size:29px}
+  .boxes{gap:10px}
+  .boxcard{padding:15px 7px}
+  .chest{font-size:49px}
+  .amount{font-size:29px}
+}
+
+.hero{
+  text-align:center;
+  padding:38px 18px;
+  background:radial-gradient(ellipse at top,#493512,#17130b 55%,#0b0b0b);
+  border-bottom:1px solid #a47b28;
+}
+.hero h1{
+  color:#ffdc70;
+  font-size:23px;
+  margin:24px 0 12px;
+}
+.hero-subtitle{
+  color:#ddd;
+  font-size:13px;
+  line-height:2;
+}
+.hero-line{
+  width:90px;
+  height:2px;
+  background:#d5aa40;
+  margin:18px auto;
+}
+.hero-badges{
+  display:flex;
+  justify-content:center;
+  flex-wrap:wrap;
+  gap:9px;
+  margin:22px 0;
+}
+.hero-badges span{
+  background:#211b0d;
+  border:1px solid #70551f;
+  color:#f5d477;
+  padding:9px 12px;
+  border-radius:20px;
+  font-size:11px;
+}
+.hero-btn{
+  padding:13px 25px;
+  font-size:14px;
+  margin:8px;
+}
+.hero-en{
+  color:#9b895e;
+  font-size:10px;
+  letter-spacing:2px;
+  margin-top:24px;
+}
+
+/* طراحی اختصاصی صندوق‌ها */
+
+.boxcard:nth-child(1){
+  border:1px solid #a87942;
+  background:linear-gradient(145deg,#302014,#15100c);
+}
+
+.boxcard:nth-child(2){
+  border:1px solid #bfc5d0;
+  background:linear-gradient(145deg,#292e38,#12151a);
+}
+
+.boxcard:nth-child(3){
+  border:1px solid #e5bd4f;
+  background:linear-gradient(145deg,#49350e,#171207);
+}
+
+.boxcard:nth-child(4){
+  border:1px solid #b58aff;
+  background:linear-gradient(145deg,#302044,#110d19);
+}
+
+.boxcard:nth-child(1) h3{color:#d99b5b}
+.boxcard:nth-child(2) h3{color:#dce2ef}
+.boxcard:nth-child(3) h3{color:#ffdc70}
+.boxcard:nth-child(4) h3{color:#c9a3ff}
+
+.boxcard:hover{
+  transform:translateY(-6px) scale(1.02);
+  box-shadow:0 0 22px #d5aa4040;
+}
+
+/* رنگ اختصاصی صندوق‌های HIRO BOX */
+
+.boxcard.bronze{
+  background:linear-gradient(145deg,#49301d,#17100b);
+  border:2px solid #bd8048;
+  box-shadow:0 0 15px #bd804833;
+}
+.boxcard.bronze h3{color:#e6a66b}
+
+.boxcard.silver{
+  background:linear-gradient(145deg,#3b414d,#11151c);
+  border:2px solid #c5ccd8;
+  box-shadow:0 0 15px #c5ccd833;
+}
+.boxcard.silver h3{color:#e3e9f5}
+
+.boxcard.gold{
+  background:linear-gradient(145deg,#59420d,#171000);
+  border:2px solid #ffda58;
+  box-shadow:0 0 18px #ffda5844;
+}
+.boxcard.gold h3{color:#ffdf70}
+
+.boxcard.vip{
+  background:linear-gradient(145deg,#402052,#140b20);
+  border:2px solid #c18aff;
+  box-shadow:0 0 20px #b77aff55;
+}
+.boxcard.vip h3{color:#d7b1ff}
+
+.boxcard{
+  transition:all .3s ease;
+}
+
+.boxcard:hover{
+  transform:translateY(-6px);
+}
+ 
+/* داشبورد اختصاصی HIRO BOX */
+
+.account-welcome{
+  text-align:center;
+  background:linear-gradient(145deg,#29200e,#111);
+  border:1px solid #70551f;
+  border-radius:16px;
+  padding:18px 10px;
+  margin:18px 0;
+}
+
+.account-avatar{
+  width:70px;
+  height:70px;
+  line-height:70px;
+  margin:auto;
+  border-radius:50%;
+  background:linear-gradient(135deg,#705018,#f5cc59);
+  font-size:35px;
+  box-shadow:0 0 20px #d5aa4055;
+}
+
+.account-stats{
+  display:grid;
+  grid-template-columns:repeat(2,minmax(0,1fr));
+  gap:12px;
+  margin:20px 0;
+}
+
+.stat-card{
+  background:linear-gradient(145deg,#30240d,#15120c);
+  border:1px solid #a47b28;
+  border-radius:15px;
+  padding:18px 8px;
+  text-align:center;
+}
+
+.stat-card span{
+  display:block;
+  font-size:30px;
+  margin-bottom:10px;
+}
+
+.stat-card small{
+  display:block;
+  color:#c9b783;
+  font-size:11px;
+  margin-bottom:10px;
+}
+
+.stat-card strong{
+  color:#ffdc70;
+  font-size:21px;
+}
+
+@media(max-width:350px){
+  .account-stats{
+    grid-template-columns:1fr;
+  }
+}
+
+/* تاریخچه حرفه‌ای جوایز */
+
+.history{
+  background:linear-gradient(145deg,#1e1a11,#111);
+  border:1px solid #806022;
+  border-radius:18px;
+  padding:18px;
+}
+
+.history h3{
+  color:#ffdc70;
+  text-align:center;
+  padding-bottom:12px;
+  border-bottom:1px solid #59451c;
+}
+
+#history{
+  display:flex;
+  flex-direction:column;
+  gap:9px;
+  margin-top:12px;
+}
+
+#history > div{
+  background:linear-gradient(100deg,#29210f,#171717);
+  border:1px solid #57451f;
+  border-radius:11px;
+  padding:13px !important;
+  color:#f4d987;
+  font-size:12px;
+  line-height:2;
+  overflow-wrap:anywhere;
+  box-shadow:0 3px 10px #0005;
+}
+
+#history > div:first-child{
+  border-color:#c99b31;
+}
+
+/* افکت لوکس کارت‌های داشبورد HIRO BOX */
+
+.account-stats {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+  margin: 22px 0;
+}
+
+.account-stats .stat-card {
+  position: relative;
+  overflow: hidden;
+  background: linear-gradient(145deg, #242016, #111111);
+  border: 1px solid rgba(247, 201, 72, 0.55);
+  border-radius: 16px;
+  padding: 18px 8px;
+  text-align: center;
+  box-shadow: 0 0 12px rgba(247, 201, 72, 0.12);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  animation: goldGlow 3s ease-in-out infinite;
+}
+
+.account-stats .stat-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 0 22px rgba(247, 201, 72, 0.35);
+}
+
+.account-stats .stat-card span {
+  display: block;
+  font-size: 27px;
+  margin-bottom: 10px;
+}
+
+.account-stats .stat-card small {
+  display: block;
+  color: #d5c28a;
+  font-size: 11px;
+  margin-bottom: 9px;
+}
+
+.account-stats .stat-card strong {
+  display: block;
+  color: #ffd75e;
+  font-size: 19px;
+  text-shadow: 0 0 10px rgba(255, 215, 94, 0.3);
+}
+
+@keyframes goldGlow {
+  0%, 100% {
+    box-shadow: 0 0 8px rgba(247, 201, 72, 0.10);
+  }
+  50% {
+    box-shadow: 0 0 17px rgba(247, 201, 72, 0.24);
+  }
+}
+
+@media (max-width: 420px) {
+  .account-stats {
+    gap: 7px;
+  }
+
+  .account-stats .stat-card {
+    padding: 14px 4px;
+  }
+
+  .account-stats .stat-card strong {
+    font-size: 15px;
+  }
+}
+
+/* پنل اختصاصی HIRO BOX */
+
+#accountPanel {
+  background: linear-gradient(145deg, #19150c, #090909);
+  border: 1px solid #8f7029;
+  border-radius: 22px;
+  box-shadow: 0 0 25px rgba(247, 201, 72, 0.12);
+  padding: 22px 16px;
+  position: relative;
+  overflow: hidden;
+}
+
+#accountPanel h2 {
+  color: #ffd75e;
+  text-shadow: 0 0 12px rgba(255, 215, 94, 0.3);
+}
+
+.account-welcome {
+  text-align: center;
+  padding: 12px;
+  border-bottom: 1px solid rgba(247, 201, 72, 0.2);
+}
+
+.account-avatar {
+  width: 68px;
+  height: 68px;
+  margin: 0 auto 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background: linear-gradient(145deg, #f7d46b, #8c6418);
+  font-size: 32px;
+  box-shadow: 0 0 20px rgba(247, 201, 72, 0.3);
+}
+
+#accountPanel .authbtn {
+  width: 100%;
+  margin-top: 18px;
+  border-radius: 12px;
+  padding: 13px;
+  font-weight: bold;
+}
+
+/* نوار پیشرفت طلایی HIRO BOX */
+
+.progress-panel {
+  margin: 22px 0;
+  padding: 16px;
+  background: linear-gradient(145deg, #201a0d, #101010);
+  border: 1px solid #9b792d;
+  border-radius: 16px;
+}
+
+.progress-panel p {
+  color: #ffd75e;
+  text-align: center;
+  font-weight: bold;
+}
+
+.progress-info {
+  display: flex;
+  justify-content: space-between;
+  color: #e7d59a;
+  font-size: 13px;
+  margin: 12px 0;
+}
+
+.progress-track {
+  width: 100%;
+  height: 13px;
+  background: #333;
+  border-radius: 20px;
+  overflow: hidden;
+}
+
+.progress-fill {
+  width: 0%;
+  height: 100%;
+  background: linear-gradient(90deg, #a87919, #ffe17a);
+  border-radius: 20px;
+  box-shadow: 0 0 12px #d6a934;
+  transition: width 0.6s ease;
+}
+
+/* نشان افتخار HIRO BOX */
+
+.achievement-panel {
+  margin: 20px 0;
+  padding: 18px;
+  text-align: center;
+  background: linear-gradient(145deg, #211b0e, #101010);
+  border: 1px solid #a17b2c;
+  border-radius: 18px;
+  box-shadow: 0 0 15px rgba(247, 201, 72, 0.12);
+}
+
+.achievement-panel h3 {
+  color: #ffd75e;
+  margin-top: 0;
+}
+
+#achievementBadge {
+  display: inline-block;
+  margin: 12px auto;
+  padding: 12px 25px;
+  border-radius: 30px;
+  background: linear-gradient(135deg, #a87919, #ffe17a);
+  color: #171006;
+  font-size: 19px;
+  font-weight: bold;
+  box-shadow: 0 0 18px rgba(255, 215, 94, 0.25);
+}
+
+#achievementDescription {
+  color: #d9c99c;
+  font-size: 12px;
+}
+ 
+.leaderboard-panel {
+  margin: 20px 0;
+  padding: 18px;
+  text-align: center;
+  background: linear-gradient(145deg, #211b0e, #101010);
+  border: 1px solid #a17b2c;
+  border-radius: 18px;
+  box-shadow: 0 0 15px rgba(247,201,72,.12);
+}
+
+.leaderboard-panel h3 {
+  color: #ffd75e;
+}
+
+.leaderboard-panel p {
+  color: #d9c99c;
+  font-size: 12px;
+}
+
+#leaderboardList {
+  margin-top: 15px;
+  color: #ffd75e;
+  line-height: 2.5;
+}
+
+.avatar-options {
+  margin: 18px 0;
+  padding: 15px;
+  background: linear-gradient(145deg,#211b0e,#101010);
+  border: 1px solid #a17b2c;
+  border-radius: 16px;
+  text-align: center;
+}
+
+.avatar-options h3 {
+  color: #ffd75e;
+  font-size: 15px;
+}
+
+.avatar-list {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 14px;
+}
+
+.avatar-list button {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  border: 1px solid #b58b32;
+  background: #17130b;
+  font-size: 25px;
+  cursor: pointer;
+}
+
+.avatar-list button:focus {
+  background: #806322;
+  border: 2px solid #ffe17a;
+  outline: none;
+}
+
+.account-avatar {
+  width: 76px;
+  height: 76px;
+  min-width: 76px;
+  margin: 0 auto 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  overflow: visible;
+  background: linear-gradient(145deg, #f7d46b, #8c6418);
+  font-family: "Apple Color Emoji", "Segoe UI Emoji", sans-serif;
+  font-size: 38px;
+  line-height: 1;
+  text-align: center;
+  flex-shrink: 0;
+  box-sizing: border-box;
+  padding: 0;
+}
+
+
+.avatar-list {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 16px;
+}
+
+.avatar-list button {
+  width: 52px;
+  height: 52px;
+  min-width: 52px;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  border: 1px solid #b58b32;
+  background: #17130b;
+  font-family: "Apple Color Emoji", "Segoe UI Emoji", sans-serif;
+  font-size: 27px;
+  line-height: 1;
+  text-align: center;
+  box-sizing: border-box;
+}
+
+.username-panel {
+  margin: 18px 0;
+  padding: 16px;
+  text-align: center;
+  background: linear-gradient(145deg,#211b0e,#101010);
+  border: 1px solid #a17b2c;
+  border-radius: 16px;
+}
+
+.username-panel h3 {
+  color: #ffd75e;
+  font-size: 15px;
+}
+
+.username-panel input {
+  width: 100%;
+  padding: 13px;
+  margin: 10px 0;
+  border: 1px solid #a17b2c;
+  border-radius: 10px;
+  background: #090909;
+  color: white;
+  text-align: center;
+  font-family: Tahoma;
+  box-sizing: border-box;
+}
+
+.username-panel button {
+  width: 100%;
+  padding: 12px;
+  border: none;
+  border-radius: 10px;
+  background: linear-gradient(135deg,#a87919,#ffe17a);
+  color: #171006;
+  font-weight: bold;
+  cursor: pointer;
+}
+/* طراحی لوکس صفحه پروفایل HIRO BOX */
+
+#myProfilePage {
+  max-width: 650px;
+  margin: 20px auto;
+  padding: 15px;
+  animation: profileShow .5s ease;
+}
+
+#myProfilePage .panel {
+  background: linear-gradient(145deg,#19160e,#080808);
+  border: 1px solid #b58a2a;
+  border-radius: 22px;
+  padding: 24px 16px;
+  box-shadow: 0 0 25px rgba(218,165,32,.13);
+}
+
+#myProfilePage h2 {
+  color: #ffd75e;
+  text-shadow: 0 0 12px rgba(255,215,94,.25);
+}
+
+#profilePageAvatar {
+  width: 105px;
+  height: 105px;
+  margin: 22px auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background: linear-gradient(145deg,#ffe28a,#936515);
+  border: 3px solid #ffe08a;
+  font-size: 55px;
+  box-shadow: 0 0 25px rgba(255,200,60,.35);
+}
+
+#profilePageName {
+  font-size: 23px;
+  color: #fff0b5;
+  margin: 12px 0;
+}
+
+#myProfilePage .stat-card {
+  background: linear-gradient(145deg,#241d0e,#111);
+  border: 1px solid #806322;
+  border-radius: 15px;
+  padding: 16px 8px;
+}
+
+#myProfilePage .stat-card strong {
+  color: #ffd75e;
+}
+
+#myProfilePage .achievement-panel {
+  margin-top: 22px;
+  border: 1px solid #a17b2c;
+  border-radius: 16px;
+  background: #17130b;
+  padding: 18px;
+}
+
+#profilePageBadge {
+  color: #ffd75e;
+  font-size: 23px;
+  font-weight: bold;
+  margin: 12px;
+}
+
+@keyframes profileShow {
+  from {
+    opacity: 0;
+    transform: translateY(15px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  }
+</style>
+
+
+</head>
+
+<body>
+
+<header class="hero">
+  <div class="logo">👑 HIRO BOX</div>
+
+  <div class="hero-line"></div>
+
+  <h1>دنیای شگفت‌انگیز صندوق‌ها</h1>
+
+  <p class="hero-subtitle">
+    صندوق خودت را انتخاب کن و شانس دریافت جایزه نمایشی را امتحان کن!
+  </p>
+
+  <div class="hero-badges">
+    <span>🎁 صندوق‌های متنوع</span>
+    <span>✨ تجربه سرگرم‌کننده</span>
+    <span>👑 حساب کاربری</span>
+  </div>
+
+  <button class="hero-btn" onclick="document.getElementById('gameArea').scrollIntoView({behavior:'smooth'})">
+    مشاهده صندوق‌ها ↓
+  </button>
+
+  <p class="hero-en">OPEN YOUR BOX • ENJOY THE EXPERIENCE</p>
+</header>
+
+
+<div class="logo">👑 HIRO BOX</div>
+<p>OPEN YOUR BOX • WIN YOUR REWARD</p>
+</>
+
+<main>
+
+<!-- فرم ورود و ثبت نام -->
+<div class="panel" id="authPanel">
+<h2>👤 حساب کاربری</h2>
+
+<input id="email" type="email" placeholder="ایمیل">
+<input id="password" type="password" placeholder="رمز عبور">
+
+<button class="authbtn" onclick="signUp()">ثبت‌نام</button>
+<button class="authbtn" onclick="signIn()">ورود</button>
+
+<p id="authMessage"></p>
+</div>
+
+<!-- حساب کاربر -->
+
+<div class="panel" id="accountPanel">
+
+  <h2>👑 پنل اختصاصی شما</h2>
+<button class="authbtn" onclick="showMyProfile()">
+  👤 پروفایل اختصاصی من
+</button>
+  <div class="account-welcome">
+   
+<div class="avatar-options">
+  <h3>👑 انتخاب تصویر پروفایل</h3>
+
+  <div class="avatar-list">
+    <button type="button" onclick="selectAvatar('👑')">👑</button>
+    <button type="button" onclick="selectAvatar('🦁')">🦁</button>
+    <button type="button" onclick="selectAvatar('🐺')">🐺</button>
+    <button type="button" onclick="selectAvatar('🐯')">🐯</button>
+    <button type="button" onclick="selectAvatar('🦅')">🦅</button>
+    <button type="button" onclick="selectAvatar('💎')">💎</button>
+  </div>
+</div>
+ 
+<div class="username-panel">
+  <h3>✏️ نام اختصاصی شما</h3>
+
+  <input
+    type="text"
+    id="newUsername"
+    maxlength="20"
+    placeholder="نام دلخواه خود را وارد کنید"
+  >
+
+  <button type="button" onclick="saveUsername()">
+    ذخیره نام
+  </button>
+</div>
+
+    <div class="account-avatar">👤</div>
+    <p>خوش آمدی به خانواده HIRO BOX</p>
+    <div class="emailText" id="accountEmail"></div>
+    <p id="accountStatus"></p>
+  </div>
+
+  <div class="account-stats">
+
+    <div class="stat-card">
+      <span>💰</span>
+      <small>موجودی آزمایشی</small>
+      <strong id="dashboardBalance">$0.00</strong>
+    </div>
+
+    <div class="stat-card">
+      <span>🎁</span>
+      <small>صندوق‌های بازشده</small>
+      <strong id="openingCount">0</strong>
+    </div>
+<div class="stat-card">
+  <span>🏆</span>
+  <small>مجموع جوایز آزمایشی</small>
+  <strong id="totalPrizes">$0.00</strong>
+</div>
+  </div>
+<div class="progress-panel">
+  <p>👑 مسیر رسیدن به ۱۰۰ صندوق</p>
+
+  <div class="progress-info">
+    <span>پیشرفت شما</span>
+    <strong id="progressText">0 / 100</strong>
+  </div>
+
+  <div class="progress-track">
+    <div id="progressFill" class="progress-fill"></div>
+  </div>
+</div>
+ 
+<div class="achievement-panel">
+  <h3>🏆 نشان افتخار شما</h3>
+
+  <div id="achievementBadge">
+    🥉 تازه‌کار
+  </div>
+
+  <p id="achievementDescription">
+    برای دریافت نشان بعدی صندوق‌های بیشتری باز کن!
+  </p>
+</div>
+
+<div class="leaderboard-panel">
+  <h3>🏆 برترین کاربران HIRO BOX</h3>
+  <p>۱۰ کاربر برتر بر اساس تعداد صندوق‌های بازشده</p>
+
+  <div id="leaderboardList">
+    در حال دریافت رتبه‌بندی...
+  </div>
+</div>
+
+<button class="authbtn" onclick="signOut()">
+  🚪 خروج از حساب
+</button>
+ 
+</div>
+
+<!-- صفحه پروفایل اختصاصی -->
+<div id="myProfilePage" style="display:none;">
+
+  <div class="panel" style="text-align:center;">
+
+    <h2>👑 پروفایل اختصاصی من</h2>
+
+<button class="authbtn" onclick="shareMyProfile()">
+  🔗 اشتراک‌گذاری پروفایل من
+</button>
+
+    <div class="account-avatar" id="profilePageAvatar">
+      👑
+    </div>
+
     <h2 id="profilePageName">کاربر HIRO BOX</h2>
 <div class="profile-rank">
   🏆 رتبه شما:
